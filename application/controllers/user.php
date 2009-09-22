@@ -52,9 +52,9 @@ class User extends Controller
 	 **/
 	function signup()
 	{
-		$user['email']    = 'admin@test.com';
-		$user['password'] = 'root';
-		$user['username'] = 'root';
+		$user['email']    = 'admin@admin.com';
+		$user['password'] = 'admin';
+		$user['username'] = 'admin';
 		$this->auth->signup($user);
 		redirect('admin');
 	}

@@ -11,3 +11,14 @@ excessive simplicity.
 
 At the moment, there is just the PHP and the HTML. I will add the styling as
 soon as possible.
+
+NOTE: To create a new user for the first time I created a temporary
+"method" (for now):
+
+Just point your browser to {base_url()}/user/signup
+ie: http://localhost/cimble/user/signup
+
+This will create the following user:
+
+	email    :  admin@admin.com
+	password :  admin
