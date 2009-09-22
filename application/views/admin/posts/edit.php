@@ -1,7 +1,3 @@
-<?php
-// TODO: Find a way to repopulate the form if the validation fails - create a helper if there is no other good way
-?>
-
 <!-- Validation Errors -->
 <?php if (validation_errors()): ?>
 	<ul class="errors">
@@ -13,18 +9,18 @@
 	<?php echo form_fieldset('Edit Post'); ?>
 		<div>
 		<?php echo form_label('Title','title'); ?>
-		<?php echo form_input('title',$post->title); ?>
+		<?php echo form_input('title',repopulate($post->title,$this->input->post('title'))); ?>
 		</div>
 		
 		<div>
 		<?php echo form_label('Content','body'); ?>
-		<?php echo form_textarea('body',$post->body); ?>
+		<?php echo form_textarea('body',repopulate($post->body,$this->input->post('body'))); ?>
 		</div>
 		
 		<div>
 		<?php $attributes['class'] = 'inline'; ?>
 		<?php echo form_label('Active','active',$attributes); ?>
-		<?php echo form_checkbox('active','active',is_active($post->active)); ?>
+		<?php echo form_checkbox('active','active',repopulate(is_active($post->active),$this->input->post('active'))); ?>
 		</div>
 		
 		<p><?php echo form_submit('delete', 'Delete'); ?><?php echo form_submit('update', 'Update'); ?></p>

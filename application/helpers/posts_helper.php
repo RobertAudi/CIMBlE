@@ -142,3 +142,26 @@ function display_admin_controls($post_id, $seperator = '|')
 {
 	return ($seperator . ' <a href="' . site_url('admin/posts/edit/' . $post_id) . '">Edit</a>');
 }
+
+/**
+ * Repopulates a form in case the form validation fails
+ * $original is the value that the field initially had. ie: $post->title
+ * $modified is the value that the field has if it has
+ *   been modified before the validation fails. ie: $this->input->post('title)
+ *
+ *
+ * @param string $original 
+ * @param string $modified 
+ * @return string
+ **/
+function repopulate($original, $modified = NULL)
+{
+	if (isset($modified) && !empty($modified))
+	{
+		return $modified;
+	}
+	else
+	{
+		return $original;
+	}
+}

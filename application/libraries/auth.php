@@ -71,7 +71,7 @@ class Auth
 		if ($query->num_rows() == 0) {
 			return FALSE;
 		}
-		$user = $query->row_array(); // TODO: Change that to row() and modify the library acordingly
+		$user = $query->row_array();
 		
 		$hashed = $this->_hash($password, $email, $user['salt']);
 		
@@ -109,7 +109,7 @@ class Auth
 			return FALSE;
 		}
 		
-		$user = $query->row_array(); // TODO: Change that to row() and modify the library acordingly
+		$user = $query->row_array();
 		
 		$hash = substr(sha1($email.rand()), 0, 10);
 		
@@ -161,7 +161,7 @@ class Auth
 			return FALSE;
 		}
 		
-		$user = $query->row_array(); // TODO: Change that to row() and modify the library acordingly
+		$user = $query->row_array();
 		
 		$new_password = $this->_hash($password, $user['email']);
 		

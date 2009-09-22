@@ -82,7 +82,10 @@ class Posts extends Controller
 		$data['post'] = $post;
 		
 		if ($data['post'] === NULL)
-			redirect(site_url()); // TODO: Replace this with a 404 page
+		{
+			$this->session->set_flashdata('notice','Invalid Request!');
+			redirect(site_url());
+		}
 		
 		$data['view_file'] = 'posts/view';
 		$data['section_name'] = array(
