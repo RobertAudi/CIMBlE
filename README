@@ -1,0 +1,13 @@
+ ======================================
+ = C   I       M          Bl   E      =
+ = CodeIgniter Minimalist Blog Engine =
+ ======================================
+
+This is my first CodeIgniter Project, it's a minimalist blog engine, a little
+too minimalist at the moment, but it's going to evolve slowly.
+
+It's intended to be user for a personal blog with one blog writer, thus the
+excessive simplicity.
+
+At the moment, there is just the PHP and the HTML. I will add the styling as
+soon as possible.
