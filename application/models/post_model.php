@@ -26,9 +26,10 @@ class Post_model extends Model
 			$this->db->limit($num);
 		$query = $this->db->get();
 		
+		$count = $query->num_rows();
 		// if the query managed to retrieve data, return the results in an array of objects
-		if ($query->num_rows() > 0) 
-			return $query->result();
+		if ($count > 0)
+			return array('list' => $query->result(), 'count' => $count);
 		
 		// if the query did not retrieve any data, return NULL
 		return NULL;

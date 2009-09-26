@@ -16,10 +16,7 @@ class Posts extends Controller
 		$data['view_file'] = 'posts/index';
 		
 		$posts = $this->post_model->get_posts();
-		
-		// $data['posts'] = $posts;
-		
-		// $posts = paginate($posts, $posts_count, $posts_per_page, $offset);
+		$posts = $posts['list'];
 		
 		/* ---------- */
 		/* Pagination */
@@ -41,7 +38,7 @@ class Posts extends Controller
 		$this->load->library('pagination');
 		
 		// config for the pagination links
-		$config['base_url'] = 'http://localhost/ci/blog/index.php/posts/index';
+		$config['base_url'] = site_url('/posts/index');
 		$config['total_rows'] = $data['posts_count'];
 		$config['per_page'] = $data['posts_per_page'];
 		$config['num_links'] = 4;
@@ -74,10 +71,8 @@ class Posts extends Controller
 	/**
 	 * View a single post
 	 */
-	function view()
+	function view($post_id)
 	{
-		$post_id = $this->uri->segment(3);
-		
 		$post = $this->post_model->get_post($post_id);
 		$data['post'] = $post;
 		

@@ -31,8 +31,9 @@
 			<?php if ($this->session->flashdata('notice')): ?>
 				<p class="notice"><?php echo $this->session->flashdata('notice'); ?></p>
 			<?php endif; ?>
-		
+			
 			<?php $this->load->view($view_file); ?>
 		</div> <!--END OF main-content-->
+		
 	</body>
 </html>

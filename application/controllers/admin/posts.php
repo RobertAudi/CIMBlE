@@ -25,7 +25,9 @@ class Posts extends Controller
 										)
 									);
 		
-		$data['posts'] = $this->post_model->get_posts(1);
+		$posts = $this->post_model->get_posts(1);
+		$data['posts'] = $posts['list'];
+		$data['posts_count'] = $posts['count'];
 		$this->load->view('admin/layout', $data);
 	}
 	
@@ -79,10 +81,8 @@ class Posts extends Controller
 	/**
 	 * Edit or Delete a post
 	 */
-	function edit()
+	function edit($post_id)
 	{
-		$post_id = $this->uri->segment(4);
-		
 		// Check if the post id is valid
 		if (!is_valid_number($post_id))
 		{

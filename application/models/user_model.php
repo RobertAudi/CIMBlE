@@ -14,7 +14,7 @@ class User_model extends Model
 	 **/
 	function get_users()
 	{
-		$this->db->select('users.id, users.username, users.email');
+		$this->db->select('users.id, users.username, users.email, users.level');
 		$query = $this->db->get('users');
 		
 		if ($query->num_rows() > 0)
@@ -43,13 +43,13 @@ class User_model extends Model
 	}
 	
 	/**
-	 * Create a user
+	 * Add a user
 	 *
 	 * @param array $user 
 	 * @return bool
 	 * @author Robert Audi
 	 **/
-	function create_user($user)
+	function add_user($user)
 	{
 		return $this->auth->signup($user);
 	}

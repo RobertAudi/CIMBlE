@@ -36,7 +36,7 @@ class Auth
 	 * Creates a new user in the database
 	 *
 	 * @param array $user 
-	 * @return array
+	 * @return bool
 	 */
 	function signup($user = NULL)
 	{

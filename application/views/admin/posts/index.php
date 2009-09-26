@@ -1,5 +1,5 @@
 <p><a href="<?php echo site_url('admin/posts/add'); ?>">New Post</a></p>
-
+<p><strong>Number of posts:</strong> <?php echo $posts_count; ?></p>
 <table>
 	<tr>
 		<th>Title</th>
@@ -10,12 +10,13 @@
 	</tr>
 	<?php foreach ($posts as $post): ?>
 		<tr>
-			<td><a href="<?php echo site_url('admin/posts/edit/'.$post->id); ?>"><?php echo $post->title; ?></a></td>
+			<td><a href="<?php echo site_url('admin/posts/edit/' . $post->id); ?>"><?php echo $post->title; ?></a></td>
 			<td><?php echo $post->username ?></td>
 			<td><?php echo $post->created_at; ?></td>
 			<td><?php echo $post->updated_at; ?></td>
 			<td><?php echo is_active_in_english($post->active); ?></td>
-			<td><a href="<?php echo site_url('admin/posts/edit/'.$post->id); ?>">Edit</a></td>
+			<td><a href="<?php echo site_url('admin/posts/edit/' . $post->id); ?>">Edit</a></td>
+			<td><a href="<?php echo site_url('posts/view/' . $post->id) ?>" title="Wiki | CodeIgniter">View</a></td>
 		</tr>
 	<?php endforeach; ?>
 </table>
