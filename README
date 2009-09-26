@@ -22,3 +22,7 @@ This will create the following user:
 
 	email    :  admin@admin.com
 	password :  admin
+
+After the first time, you can add users from the dashboard, but you
+need to be logged in. Registrations are not open to the public, and will
+probably never be.

@@ -48,14 +48,16 @@ class User extends Controller
 	
 	
 	/**
-	 * Add a user - method available for testing purposes only
+	 * FIXME: Add a user - method available for testing purposes only
 	 **/
 	function signup()
 	{
 		$user['email']    = 'admin@admin.com';
 		$user['password'] = 'admin';
 		$user['username'] = 'admin';
+		$user['level']    = 1;
 		$this->auth->signup($user);
+		$this->session->set_flashdata('notice','First User created successfully');
 		redirect('admin');
 	}
 }
