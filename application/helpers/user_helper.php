@@ -1,4 +1,4 @@
-<?php
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
  * Converts a user level from an int to a user readable "label" (string)
@@ -17,4 +17,7 @@ function user_level_in_english($user_level)
 			break;
 	}
 	return $user_level;
-}
+} // End of user_level_in_english
+
+/* End of file user_helper.php */
+/* Location: ./application/helpers/user_helper.php */

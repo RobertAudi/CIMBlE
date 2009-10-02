@@ -43,8 +43,12 @@
 $route['default_controller'] = "posts";
 $route['scaffolding_trigger'] = "";
 
-// This is the admin default controller
-$route['admin'] = "admin/welcome";
+/*
+| -------------------------------------------------------------------------
+| MY ROUTES
+| -------------------------------------------------------------------------
+*/
+$route['admin'] = "admin/dashboard";
 
 /* End of file routes.php */
 /* Location: ./system/application/config/routes.php */

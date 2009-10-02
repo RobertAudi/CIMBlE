@@ -20,9 +20,16 @@ ie: http://localhost/cimble/user/signup
 
 This will create the following user:
 
-	email    :  admin@admin.com
-	password :  admin
+  email    :  admin
+  password :  admin
+
+EDIT: There is now a link on every page to add a new user. It will add the
+same user everytime. This will be soon replaced by a simple install.php file
+that will be run to create the first user only.
 
 After the first time, you can add users from the dashboard, but you
 need to be logged in. Registrations are not open to the public, and will
 probably never be.
+
+I have rewritten the whole application. It is now cleaner, better commented,
+and it uses my new authentication library, Azauth.

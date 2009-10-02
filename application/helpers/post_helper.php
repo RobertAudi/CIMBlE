@@ -1,4 +1,5 @@
-<?php
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+
 /**
  * Formats the date passed as argument
  *
@@ -8,7 +9,7 @@
 function post_date($date)
 {
 	return date('D jS Y - H:i', strtotime($date));
-}
+} // End of post_date
 
 /**
  * Generate an exerpt if there is an hr tag in the post
@@ -27,7 +28,7 @@ function read_more($string)
 	} else {
 		return $string;
 	}
-}
+} // End of read_more
 
 /**
  * Checks if post is active
@@ -51,7 +52,25 @@ function is_active($num)
 	{
 		return FALSE;
 	}
-}
+} // End of is_active
+
+/**
+ * Translates the active state of a post in english
+ *
+ * @param int $active 
+ * @return string
+ **/
+function is_active_in_english($active)
+{
+	if ($active == 1)
+	{
+		$active_in_english = 'Active';
+	} elseif ($active == 0) {
+		$active_in_english = 'Inactive';
+	}
+	
+	return $active_in_english;
+} // End of is_active_in_english
 
 /**
  * Create a temporary array of posts out of a bigger array
@@ -85,7 +104,7 @@ function paginate($posts, $number_of_posts, $number_of_posts_per_page, $offset)
 	$page_posts = array_slice($posts, $first_message_to_display, $number_of_posts_per_page);
 	
 	return $page_posts;
-}
+} // End of paginate
 
 /**
  * Gets the page number the user is on
@@ -111,25 +130,7 @@ function get_page_number($offset, $number_of_posts_per_page)
 	{
 		return ($offset / $number_of_posts_per_page) + 1;
 	}
-}
-
-/**
- * Translates the active state of a post in english
- *
- * @param int $active 
- * @return string
- **/
-function is_active_in_english($active)
-{
-	if ($active == 1)
-	{
-		$active_in_english = 'Active';
-	} elseif ($active == 0) {
-		$active_in_english = 'Inactive';
-	}
-	
-	return $active_in_english;
-}
+} // End of get_page_number
 
 /**
  * Display the Edit link to edit each post
@@ -141,14 +142,13 @@ function is_active_in_english($active)
 function display_admin_controls($post_id, $seperator = '|')
 {
 	return ($seperator . ' <a href="' . site_url('admin/posts/edit/' . $post_id) . '">Edit</a>');
-}
+} // End of display_admin_controls
 
 /**
  * Repopulates a form in case the form validation fails
  * $original is the value that the field initially had. ie: $post->title
  * $modified is the value that the field has if it has
  *   been modified before the validation fails. ie: $this->input->post('title)
- *
  *
  * @param string $original 
  * @param string $modified 
@@ -164,4 +164,7 @@ function repopulate($original, $modified = NULL)
 	{
 		return $original;
 	}
-}
+} // End of repopulate
+
+/* End of file post_helper.php */
+/* Location: ./application/helpers/post_helper.php */

@@ -32,17 +32,6 @@
 			<?php echo form_password('password_confirmation',''); ?>
 		</div>
 		
-		<div>
-			<?php echo form_label('User Level','level'); ?>
-			<?php
-			$levels = 	array(
-							'1'  => 'Administrator',
-							'100' => 'Editor',
-						);
-			echo form_dropdown('level', $levels, '100');
-			?>
-		</div>
-		
 		<?php echo form_submit('submit','Add'); ?>
 	</fieldset>
 </form>

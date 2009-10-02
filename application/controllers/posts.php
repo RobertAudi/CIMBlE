@@ -2,16 +2,25 @@
 
 class Posts extends Controller
 {
-	function __construct()
+	// constructor
+	public function __construct()
 	{
 		parent::Controller();
+		
+		// load the post model
 		$this->load->model('post_model');
+		
+		// load necessary helpers
+		$this->load->helper('post_helper');
 	}
 	
-	/**
-	 * View all the posts
-	 */
-	function index()
+	// php4 compatibility
+	public function Posts()
+	{
+		self::__construct();
+	}
+	
+	public function index()
 	{
 		$data['view_file'] = 'posts/index';
 		
@@ -64,14 +73,10 @@ class Posts extends Controller
 									)
 								);
 		
-		// Load the layout and pass to it the data array
-		$this->load->view('layout', $data);
-	}
+		$this->load->view('main', $data);
+	} // End of index
 	
-	/**
-	 * View a single post
-	 */
-	function view($post_id)
+	public function view($post_id)
 	{
 		$post = $this->post_model->get_post($post_id);
 		$data['post'] = $post;
@@ -94,6 +99,9 @@ class Posts extends Controller
 									)
 								);
 		
-		$this->load->view('layout', $data);
-	}
-}
+		$this->load->view('main', $data);
+	} // End of view
+} // End of Posts controller
+
+/* End of file posts.php */
+/* Location: ./application/controller/posts.php */

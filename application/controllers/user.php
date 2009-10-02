@@ -2,62 +2,84 @@
 
 class User extends Controller
 {
-	function __construct()
+	// constructor
+	public function __construct()
 	{
 		parent::Controller();
 		
+		// load the user model
+		$this->load->model('user_model');
+		
+		// load necessarry libraries and helpers
 		$this->load->library('form_validation');
 		$this->load->helper('form');
 	}
 	
-	function index()
+	// php4 compatibility
+	public function User()
 	{
-		$this->auth->logged_in() ? redirect('admin/welcome/index') : redirect('user/login');
+		self::__construct();
 	}
 	
-	function login()
+	public function index()
+	{
+		$this->azauth->logged_in() ? redirect('admin/dashboard/index') : redirect('user/login');
+	} // End of index
+	
+	public function login()
 	{
 		$data['view_file'] = 'user/login';
 		
+		// if validation fails
 		if ($this->form_validation->run('user/login') == FALSE)
 		{
-			$this->load->view('layout',$data);
+			// send the user to the login form
+			$this->load->view('main',$data);
 		}
 		else
 		{
-			$email = $this->input->post('email');
+			// retrieve the username and password from the form
+			$username = $this->input->post('username');
 			$password = $this->input->post('password');
 			
-			if ($this->auth->login($email,$password))
+			// try to log the user in
+			if ($this->azauth->login($username,$password))
 			{
-				redirect('admin/welcome/index');
+				// if login succeeded, send the user to the dashboard
+				redirect('admin/dashboard/index');
 			}
 			else
 			{
+				// if the login failed, send feedback to the user...
 				$this->session->set_flashdata('notice','Wrong Login/Password combination');
-				$this->load->view('layout',$data);
+				// ...and send the user back to the login form
+				$this->load->view('main',$data);
 			}
 		}
-	}
+	} // End of login
 	
-	function logout()
+	public function logout()
 	{
-		$this->auth->logout();
-		redirect(site_url());
-	}
+		$this->azauth->logout();
+		redirect('posts/index');
+	} // End of logout
 	
-	
-	/**
-	 * FIXME: Add a user - method available for testing purposes only
-	 **/
-	function signup()
+	// NOTE: This method is for the developement environment only
+	public function add()
 	{
-		$user['email']    = 'admin@admin.com';
-		$user['password'] = 'admin';
-		$user['username'] = 'admin';
-		$user['level']    = 1;
-		$this->auth->signup($user);
-		$this->session->set_flashdata('notice','First User created successfully');
-		redirect('admin');
-	}
-}
+		$username = 'admin' ;
+		$password = 'admin' ;
+		$email    = 'admin@test.com' ;
+		
+		if ($this->user_model->add_user($username, $password, $email))
+		{
+			die('user added');
+		}
+		else
+		{
+			die('error');
+		}
+		
+	} // End of add
+	
+} // End of User controller

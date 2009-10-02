@@ -39,7 +39,7 @@
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array('database', 'auth', 'session');
+$autoload['libraries'] = array('database', 'session', 'Azauth');
 
 
 /*
@@ -51,7 +51,7 @@ $autoload['libraries'] = array('database', 'auth', 'session');
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('html', 'url', 'application_helper','posts_helper', 'user_helper');
+$autoload['helper'] = array('url', 'application_helper');
 
 
 /*
@@ -79,7 +79,7 @@ $autoload['plugin'] = array();
 |
 */
 
-$autoload['config'] = array('blog_config');
+$autoload['config'] = array('MY_config');
 
 
 /*

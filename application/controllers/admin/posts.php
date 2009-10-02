@@ -2,16 +2,27 @@
 
 class Posts extends Controller
 {
-	function __construct()
+	// constructor
+	public function __construct()
 	{
 		parent::Controller();
 		
+		// load the post model
+		$this->load->model('post_model');
+		
+		// load necessary helpers
 		$this->load->library('form_validation');
 		$this->load->helper('form');
-		$this->load->model('post_model');
+		$this->load->helper('post_helper');
 	}
 	
-	function index()
+	// php4 compatibility
+	public function Posts()
+	{
+		self::__construct();
+	}
+	
+	public function index()
 	{
 		$data['view_file'] = 'admin/posts/index';
 		$data['section_name'] = 	array(
@@ -25,16 +36,55 @@ class Posts extends Controller
 										)
 									);
 		
+		// the parameter (1) is used to also display inactive posts in the posts section of the dashboard
 		$posts = $this->post_model->get_posts(1);
+		
+		// seperate the postslist...
 		$data['posts'] = $posts['list'];
+		// ...and the posts count. Take a loot at the get_posts method in the post_model if you're confused.
 		$data['posts_count'] = $posts['count'];
-		$this->load->view('admin/layout', $data);
-	}
+		
+		/* ---------- */
+		/* Pagination */
+		/* ---------- */
+		
+		// config for the pagination of the content (posts)
+		$data['posts_per_page'] = 10;
+		$data['offset'] = $this->uri->segment(4);
+		
+		// If the offset is invalid or NULL (in which case the user goes back to the first page anyway)
+		// the user is sent back to the first page and a feedback message is displayed
+		if ((!is_valid_number($data['offset']) || !array_key_exists($data['offset'],$data['posts'])) && !empty($data['offset']))
+		{	
+			$this->session->set_flashdata('notice','Invalid Request');
+			redirect('admin/posts/index/0');
+		}
+		
+		// load the pagination library
+		$this->load->library('pagination');
+		
+		// config for the pagination links
+		$config['base_url']       = site_url('/admin/posts/index');
+		$config['total_rows']     = $data['posts_count'];
+		$config['per_page']       = $data['posts_per_page'];
+		$config['num_links']      = 10;
+		$config['uri_segment']    = 4;
+		$config['full_tag_open']  = '<div class="pagination-links">';
+		$config['full_tag_close'] = '</div>';
+		
+		// initialize pagination with the configuration array above
+		$this->pagination->initialize($config);
+		
+		// Create pagination links and store them in the data array
+		$data['pagination_links'] = $this->pagination->create_links();
+		
+		// Dynamically generate the posts pagination everytime the user clicks on a pagination link
+		$data['posts'] = paginate($data['posts'], $data['posts_count'], $data['posts_per_page'], $data['offset']);
+		
+		$this->load->view('admin/admin', $data);
+	} // End of index
 	
-	/**
-	 * Add a new post
-	 **/
-	function add()
+	public function add()
 	{
 		if ($this->form_validation->run('admin/posts/add') == FALSE)
 		{
@@ -54,18 +104,18 @@ class Posts extends Controller
 												)
 											);
 		
-			$this->load->view('admin/layout',$view_data);
+			$this->load->view('admin/admin',$view_data);
 		}
 		// if there is either a post title or a post body, insert a new post in the database
 		else
 		{
 			// retrieve the user info, more specifically, the user id - see $data[user_id]
-			$user = $this->auth->get_user();
+			$user = $this->azauth->get_user('user_id');
 			
 			// save the post attributes in a temporary array
 			$data['title'] = $this->input->post('title');
 			$data['body'] = $this->input->post('body');
-			$data['user_id'] = $user['id'];
+			$data['user_id'] = $user['user_id'];
 			$data['active'] = $this->input->post('active') == 'active' ? 1 : 0;
 			$data['created_at'] = date('Y-m-d H:i:s');
 			$data['updated_at'] = date('Y-m-d H:i:s');
@@ -76,12 +126,9 @@ class Posts extends Controller
 			// redirect the user to the Posts section in the Dashboard
 			redirect('admin/posts/index');
 		}
-	}
+	} // End of add
 	
-	/**
-	 * Edit or Delete a post
-	 */
-	function edit($post_id)
+	public function edit($post_id)
 	{
 		// Check if the post id is valid
 		if (!is_valid_number($post_id))
@@ -116,7 +163,7 @@ class Posts extends Controller
 				redirect(site_url('admin/posts/index'));
 			}
 			
-			$this->load->view('admin/layout',$view_data);
+			$this->load->view('admin/admin',$view_data);
 		}
 		
 		// if the user clicked on the Delete button, delete the post...
@@ -147,5 +194,9 @@ class Posts extends Controller
 			$this->session->set_flashdata('notice','Invalid Request!');
 			redirect('admin/posts/index');
 		}
-	}
-}
+	} // End of edit
+	
+} // End of Posts controller
+
+/* End of file posts.php */
+/* Location: ./application/controllers/admin/posts.php */

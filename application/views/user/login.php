@@ -8,8 +8,8 @@
 <?php echo form_open(site_url('user/login')); ?>
 	<?php echo form_fieldset('Login to your account'); ?>
 		<div>
-		<?php echo form_label('Email:','email'); ?>
-		<?php echo form_input('email',''); ?>
+		<?php echo form_label('Login:','username'); ?>
+		<?php echo form_input('username', ''); ?>
 		</div>
 		
 		<div>

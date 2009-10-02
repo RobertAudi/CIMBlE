@@ -11,7 +11,7 @@
 |	http://example.com/
 |
 */
-$config['base_url']	= "http://localhost/ci/CIMBlE/";
+$config['base_url']	= "http://localhost/ci/test_blog/";
 
 /*
 |--------------------------------------------------------------------------
@@ -217,7 +217,7 @@ $config['cache_path'] = '';
 | enabled you MUST set an encryption key.  See the user guide for info.
 |
 */
-$config['encryption_key'] = "";
+$config['encryption_key'] = "pfAXxRVcuQwYTrCszLobM6WFDHKZi7Ug9t4ykd3n2vE8emGPMkvrNsGBa8mfCEx4X29";
 
 /*
 |--------------------------------------------------------------------------
