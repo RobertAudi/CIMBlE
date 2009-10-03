@@ -24,20 +24,11 @@ class Posts extends Controller
 	
 	public function index()
 	{
-		$data['view_file'] = 'admin/posts/index';
-		$data['section_name'] = 	array(
-										array(
-											'title' => 'Dashboard',
-											'url' => 'admin'
-										),
-										array(
-											'title' => 'Posts',
-											'url' => 'admin/posts/index'
-										)
-									);
-		
 		// the parameter (1) is used to also display inactive posts in the posts section of the dashboard
 		$posts = $this->post_model->get_posts(1);
+		
+		// if there are no posts we don't want to load the regular posts view file or we'll get an error
+		$data['view_file'] = ($posts['count'] > 0) ? 'admin/posts/index' : 'posts/no-posts';
 		
 		// seperate the postslist...
 		$data['posts'] = $posts['list'];
@@ -79,7 +70,29 @@ class Posts extends Controller
 		$data['pagination_links'] = $this->pagination->create_links();
 		
 		// Dynamically generate the posts pagination everytime the user clicks on a pagination link
-		$data['posts'] = paginate($data['posts'], $data['posts_count'], $data['posts_per_page'], $data['offset']);
+		$data['posts'] = paginate($posts['list'], $data['posts_count'], $data['posts_per_page'], $data['offset']);
+		
+		// Generate the dynamic breadcrumbs
+		$data['section_name'] = 	array(
+										array(
+											'title' => 'Dashboard',
+											'url' => 'admin'
+										),
+										array(
+											'title' => 'Posts',
+											'url' => 'admin/posts/index'
+										)
+									);
+		
+		// the page number segment of the breadcrumbs will only appear if there is at least two pages
+		if ($posts['count'] > $config['per_page'])
+		{
+			array_push($data['section_name'],	array(
+													'title' => 'page ' . get_page_number($data['offset'],$data['posts_per_page']),
+													'url' => 'admin/posts/index/' . $data['offset']
+												)
+			);
+		}
 		
 		$this->load->view('admin/admin', $data);
 	} // End of index

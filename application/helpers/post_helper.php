@@ -101,6 +101,10 @@ function paginate($posts, $number_of_posts, $number_of_posts_per_page, $offset)
 		$first_message_to_display = $offset;
 	}
 	
+	// if posts is empty, array_slice will return an error, so we will just return the unchanged posts variable in that case.
+	if(empty($posts) || !isset($posts))
+		return $posts;
+	
 	$page_posts = array_slice($posts, $first_message_to_display, $number_of_posts_per_page);
 	
 	return $page_posts;

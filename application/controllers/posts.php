@@ -22,33 +22,37 @@ class Posts extends Controller
 	
 	public function index()
 	{
-		$data['view_file'] = 'posts/index';
-		
+		// get the posts list and the posts count
 		$posts = $this->post_model->get_posts();
-		$posts = $posts['list'];
+		
+		// if there are no posts we don't want to load the regular posts view file or we'll get an error
+		$data['view_file'] = ($posts['count'] > 0) ? 'posts/index' : 'posts/no-posts';
+		
+		// put the posts list in the data array
+		$data['posts'] = $posts['list'];
 		
 		/* ---------- */
 		/* Pagination */
 		/* ---------- */
 		
 		// config for the pagination of the content (posts)
-		$data['posts_count'] = count($posts);
 		$data['posts_per_page'] = 3;
 		$data['offset'] = $this->uri->segment(3);
 		
 		// If the offset is invalid or NULL (in which case the user goes back to the first page anyway)
 		// the user is sent back to the first page and a feedback message is displayed
-		if ((!is_valid_number($data['offset']) || !array_key_exists($data['offset'],$posts)) && !empty($data['offset']))
+		if ((!is_valid_number($data['offset']) || !array_key_exists($data['offset'],$posts['list'])) && !empty($data['offset']))
 		{	
 			$this->session->set_flashdata('notice','Invalid Request');
 			redirect('posts/index/0');
 		}
 		
+		// load the pagination library
 		$this->load->library('pagination');
 		
 		// config for the pagination links
 		$config['base_url'] = site_url('/posts/index');
-		$config['total_rows'] = $data['posts_count'];
+		$config['total_rows'] = $posts['count'];
 		$config['per_page'] = $data['posts_per_page'];
 		$config['num_links'] = 4;
 		
@@ -59,19 +63,25 @@ class Posts extends Controller
 		$data['pagination_links'] = $this->pagination->create_links();
 		
 		// Dynamically generate the posts pagination everytime the user clicks on a pagination link
-		$data['posts'] = paginate($posts, $data['posts_count'], $data['posts_per_page'], $data['offset']);
+		$data['posts'] = paginate($posts['list'], $posts['count'], $data['posts_per_page'], $data['offset']);
 		
 		// Generate the dynamic breadcrumbs
 		$data['section_name'] = array(
 									array(
 										'title' => 'Blog',
 										'url' => 'posts/index'
-									),
-									array(
-										'title' => 'page ' . get_page_number($data['offset'],$data['posts_per_page']),
-										'url' => 'posts/index/' . $data['offset']
 									)
 								);
+		
+		// the page number segment of the breadcrumbs will only appear if there is at least two pages
+		if ($posts['count'] > $config['per_page'])
+		{
+			array_push($data['section_name'],	array(
+													'title' => 'page ' . get_page_number($data['offset'],$data['posts_per_page']),
+													'url' => 'posts/index/' . $data['offset']
+												)
+			);
+		}
 		
 		$this->load->view('main', $data);
 	} // End of index
