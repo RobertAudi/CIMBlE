@@ -26,6 +26,7 @@ class Post_model extends Model
 	 **/
 	public function get_posts($all_posts = NULL, $num = NULL)
 	{
+		// get the posts
 		$this->db->select('posts.id, posts.title, posts.body, posts.created_at, posts.updated_at, posts.active, users.username');
 		$this->db->from('posts');
 		$this->db->join('users', 'posts.user_id = users.id', 'left');
@@ -36,6 +37,7 @@ class Post_model extends Model
 			$this->db->limit($num);
 		$query = $this->db->get();
 		
+		// count the number of posts
 		$count = $query->num_rows();
 		// if the query managed to retrieve data, return the results in an array of objects
 		if ($count > 0)

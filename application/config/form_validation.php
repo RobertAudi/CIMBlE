@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 $config = array(
-	// user login
+	// USER LOGIN
 	'user/login' => array(
 		// username
 		array(
@@ -17,7 +17,7 @@ $config = array(
 		)
 	),
 	
-	// new post
+	// NEW POST
 	'admin/posts/add' => array(
 		// title
 		array(
@@ -33,7 +33,7 @@ $config = array(
 		)
 	),
 	
-	// edit post
+	// EDIT POST
 	'admin/posts/edit' => array(
 		// title
 		array(
@@ -49,7 +49,7 @@ $config = array(
 		)
 	),
 	
-	// new user
+	// NEW USER
 	'admin/users/add' => array(
 		// username - TODO: add a callback to verify that the username is unique
 		array(
@@ -81,6 +81,34 @@ $config = array(
 			'label' => 'Password Confirmation',
 			'rules' => 'trim|required|min_length[4]|max_length[40]|matches[password]|xss_clean'
 		)
+	),
+	
+	// NEW COMMENT
+	'posts/comments' => array(
+		// name
+		array(
+			'field' => 'name',
+			'label' => 'Name',
+			'rules' => 'trim|required|min_length[3]|max_length[50]|xss_clean'
+		),
+		// email
+		array(
+			'field' => 'email',
+			'label' => 'Email',
+			'rules' => 'trim|required|valid_email|min_length[8]|max_length[100]|xss_clean'
+		),
+		// website
+		array(
+			'field' => 'website',
+			'label' => 'Website',
+			'rules' => 'trim|min_length[5]|max_length[100]|xss_clean'
+		),
+		// comment body
+		array(
+			'field' => 'body',
+			'label' => 'Comment',
+			'rules' => 'required|prep_for_form'
+		),
 	)
 );
 

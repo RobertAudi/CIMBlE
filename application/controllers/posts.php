@@ -88,16 +88,66 @@ class Posts extends Controller
 	
 	public function view($post_id)
 	{
-		$post = $this->post_model->get_post($post_id);
-		$data['post'] = $post;
+		$data['post'] = $this->post_model->get_post($post_id);
+		$data['post_id'] = $post_id;
 		
+		// if the model did not retrieve any post, inform the user and redirect him to the main page
 		if ($data['post'] === NULL)
 		{
 			$this->session->set_flashdata('notice','Invalid Request!');
 			redirect(site_url());
 		}
 		
+		/* -------- */
+		/* Comments */
+		/* -------- */
+		
+		// load the comment model
+		$this->load->model('comment_model');
+		
+		// load the form validation library and the form helper so that we can display the comments form
+		$this->load->library('form_validation');
+		$this->load->helper('form');
+		
+		// we check validation before we get the comments so that if a visitor submitted a comment it appears right away
+		if ($this->form_validation->run('posts/comments') == TRUE)
+		{
+			$comment_data['post_id']        = $post_id;
+			$comment_data['author_name']    = $this->input->post('name');
+			$comment_data['author_email']   = $this->input->post('email');
+			$comment_data['author_website'] = $this->input->post('website');
+			$comment_data['body']           = $this->input->post('body');
+			$comment_data['created_at']     = date('Y-m-d H:i:s');
+			
+			$this->comment_model->add_comment($comment_data);
+		}
+		
+		// get comments
+		$comments = $this->comment_model->get_comments($post_id);
+		
+		// if there are no comments (yet)
+		if (empty($comments))
+		{
+			// display a message instead of the comments list
+			$data['comments_view_file'] = 'comments/no-comments';
+			$data['comments'] = 'Post the first comment!';
+		}
+		else
+		{
+			$data['comments_view_file'] = 'comments/index';
+			$data['comments'] = $comments['list'];
+		}
+		
+		// pass the comments form and comments list file paths to the view
+		$data['comments_form'] = 'comments/add';
+		
+		// pass the posts view file path to the view
 		$data['view_file'] = 'posts/view';
+		
+		// used for the breadcrumbs, I don't like the syntax $data['post']->title, it's ugly and confusing
+		$post = $data['post'];
+		
+		// and set up the breadcrumbs
 		$data['section_name'] = array(
 									array(
 										'title' => 'Blog',
