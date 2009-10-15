@@ -8,12 +8,6 @@ class User_model extends Model
 		parent::Model();
 	}
 	
-	// php4 compatibility
-	public function User_model()
-	{
-		self::__construct();
-	}
-	
 	/**
 	 * Get a list of all the registered users
 	 *

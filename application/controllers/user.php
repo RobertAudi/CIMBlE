@@ -15,12 +15,6 @@ class User extends Controller
 		$this->load->helper('form');
 	}
 	
-	// php4 compatibility
-	public function User()
-	{
-		self::__construct();
-	}
-	
 	public function index()
 	{
 		$this->azauth->logged_in() ? redirect('admin/dashboard/index') : redirect('user/login');

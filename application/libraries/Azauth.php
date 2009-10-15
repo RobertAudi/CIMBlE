@@ -27,12 +27,6 @@ class Azauth
 		$this->_ci->load->helper('string');
 	}
 	
-	// php4 compatibility
-	public function Azauth()
-	{
-		self::__construct();
-	}
-	
 // ==================
 // = Public Methods =
 // ==================

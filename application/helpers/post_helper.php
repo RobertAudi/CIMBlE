@@ -77,6 +77,7 @@ function is_active_in_english($active)
  * so that the correct posts are displayed on each page when
  * using CodeIgniter's pagination class
  *
+ * @todo move this method to the application_helper
  * @param array $posts 
  * @param int $number_of_posts 
  * @param int $number_of_posts_per_page 
@@ -113,6 +114,7 @@ function paginate($posts, $number_of_posts, $number_of_posts_per_page, $offset)
 /**
  * Gets the page number the user is on
  *
+ * @todo move this method to the application_helper
  * @param int $offset
  * @param int $number_of_posts_per_page 
  * @return int

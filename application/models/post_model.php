@@ -8,12 +8,6 @@ class Post_model extends Model
 		parent::Model();
 	}
 	
-	// php4 compatibility
-	public function Post_model()
-	{
-		self::__construct();
-	}
-	
 	/**
 	 * Retrieves all the posts from the database.
 	 * The first parameter is used to be able to

@@ -8,12 +8,6 @@ class Dashboard extends Controller
 		parent::Controller();
 	}
 	
-	// php4 compatibility
-	public function Dashboard()
-	{
-		self::__construct();
-	}
-	
 	public function index()
 	{
 		$data['view_file'] = 'admin/dashboard';

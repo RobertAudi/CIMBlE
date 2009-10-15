@@ -11,12 +11,6 @@ class Users extends Controller
 		$this->load->model('user_model');
 	}
 	
-	// php4 compatibility
-	public function Users()
-	{
-		self::__construct();
-	}
-	
 	public function index()
 	{
 		$data['view_file'] = 'admin/users/index';

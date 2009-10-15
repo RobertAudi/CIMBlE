@@ -16,12 +16,6 @@ class Posts extends Controller
 		$this->load->helper('post_helper');
 	}
 	
-	// php4 compatibility
-	public function Posts()
-	{
-		self::__construct();
-	}
-	
 	public function index()
 	{
 		// the parameter (1) is used to also display inactive posts in the posts section of the dashboard
@@ -32,12 +26,12 @@ class Posts extends Controller
 		
 		// seperate the postslist...
 		$data['posts'] = $posts['list'];
-		// ...and the posts count. Take a loot at the get_posts method in the post_model if you're confused.
+		// ...and the posts count. Take a look at the get_posts method in the post_model if you're confused.
 		$data['posts_count'] = $posts['count'];
 		
-		/* ---------- */
-		/* Pagination */
-		/* ---------- */
+		/* -------------- */
+		/* - Pagination - */
+		/* -------------- */
 		
 		// config for the pagination of the content (posts)
 		$data['posts_per_page'] = 10;
@@ -46,7 +40,7 @@ class Posts extends Controller
 		// If the offset is invalid or NULL (in which case the user goes back to the first page anyway)
 		// the user is sent back to the first page and a feedback message is displayed
 		if ((!is_valid_number($data['offset']) || !array_key_exists($data['offset'],$data['posts'])) && !empty($data['offset']))
-		{	
+		{
 			$this->session->set_flashdata('notice','Invalid Request');
 			redirect('admin/posts/index/0');
 		}

@@ -8,30 +8,25 @@ class Comment_model extends Model
 		parent::Model();
 	}
 	
-	// php4 compatibility
-	public function Comment_model()
-	{
-		self::__construct();
-	}
-	
 	/**
 	 * Get all the comments or a set number of them for the current post.
-	 * At least one of the two arguments must not be NULL.
-	 * If $post_id is NULL, then this method will retrieve the {$num} most recent comments.
+	 * If $post_id is NULL, all the posts will be retrieved, for all the posts, even the 
+	 * comments that are set as spam or are not yet approved.
 	 *
 	 * @access public
 	 * @param int $post_id 
 	 * @param int $num
+	 * @param int $all
 	 * @return array
 	 **/
 	public function get_comments($post_id = NULL, $num = NULL)
 	{
 		// get the comments
-		$this->db->select('a.id, a.author_name, a.author_email, a.author_website, a.body, a.created_at, a.parent_id');
+		$this->db->select('a.id, a.post_id, a.author_name, a.author_email, a.author_website, a.body, a.created_at, a.parent_id, posts.title');
 		$this->db->from('comments a');
+		$this->db->join('posts', 'a.post_id = posts.id', 'left');
 		if ($post_id !== NULL)
-			$this->db->join('posts', 'a.post_id = posts.id', 'left');
-		$this->db->where('posts.id',$post_id);
+			$this->db->where('a.post_id', $post_id);
 		$this->db->order_by('a.created_at', 'desc');
 		if($num !== NULL)
 			$this->db->limit($num);
@@ -47,18 +42,6 @@ class Comment_model extends Model
 		// else return NULL
 		return NULL;
 	} // End of get_comments
-	
-	/**
-	 * Get one specific comment.
-	 *
-	 * @access public
-	 * @param int $comment_id 
-	 * @return
-	 **/
-	public function get_comment($comment_id = NULL)
-	{
-		
-	} // End of get_comment
 	
 	/**
 	 * Submit a new comment to the current post

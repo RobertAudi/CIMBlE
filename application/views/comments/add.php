@@ -24,7 +24,7 @@
 		</div>
 		
 		<div>
-		<?php echo form_textarea('body', set_value('body')); ?>
+		<?php echo form_textarea('body', ''); ?>
 		</div>
 		
 		<p><?php echo form_submit('submit', 'Submit'); ?></p>

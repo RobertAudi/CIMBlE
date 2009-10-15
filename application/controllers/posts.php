@@ -14,12 +14,6 @@ class Posts extends Controller
 		$this->load->helper('post_helper');
 	}
 	
-	// php4 compatibility
-	public function Posts()
-	{
-		self::__construct();
-	}
-	
 	public function index()
 	{
 		// get the posts list and the posts count
