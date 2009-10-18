@@ -12,9 +12,9 @@ class Post_model extends Model
 	 * Retrieves all or some ofthe posts from the database.
 	 * If $num is a number, then the method will retrive that
 	 * amount of posts from the database; if $num is set to
-	 * 'all', then all the posts will be retrieved, including 
-	 * inactive posts and spam. For all other values of $num
-	 * all the active posts will be retrieved only.
+	 * 'all', then all the posts will be retrieved, including
+	 * inactive posts. For all other values of $num all the
+	 * active posts will be retrieved only.
 	 *
 	 * @access public
 	 * @param int|string $num 
@@ -26,10 +26,10 @@ class Post_model extends Model
 		$this->db->select('posts.id, posts.title, posts.body, posts.created_at, posts.updated_at, posts.active, users.username');
 		$this->db->from('posts');
 		$this->db->join('users', 'posts.user_id = users.id', 'left');
-		if ($all_posts === NULL)
+		if ($num !== 'all' && !is_valid_number($num))
 			$this->db->where('posts.active',1);
 		$this->db->order_by('posts.created_at', 'desc');
-		if ($num !== NULL) 
+		if (is_valid_number($num)) 
 			$this->db->limit($num);
 		$query = $this->db->get();
 		
