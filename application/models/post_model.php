@@ -9,16 +9,18 @@ class Post_model extends Model
 	}
 	
 	/**
-	 * Retrieves all the posts from the database.
-	 * The first parameter is used to be able to
-	 * see inactive posts in the admin posts area.
+	 * Retrieves all or some ofthe posts from the database.
+	 * If $num is a number, then the method will retrive that
+	 * amount of posts from the database; if $num is set to
+	 * 'all', then all the posts will be retrieved, including 
+	 * inactive posts and spam. For all other values of $num
+	 * all the active posts will be retrieved only.
 	 *
 	 * @access public
-	 * @param int $all_posts 
-	 * @param int $num 
+	 * @param int|string $num 
 	 * @return array
 	 **/
-	public function get_posts($all_posts = NULL, $num = NULL)
+	public function get_posts($num = NULL)
 	{
 		// get the posts
 		$this->db->select('posts.id, posts.title, posts.body, posts.created_at, posts.updated_at, posts.active, users.username');
