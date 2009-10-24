@@ -162,7 +162,7 @@ class Posts extends Controller
 												)
 											);
 			
-			$view_data['post'] = $this->post_model->get_post($post_id, 0);
+			$view_data['post'] = $this->post_model->get_post($post_id, 'all');
 			
 			if ($view_data['post'] === NULL)
 			{
@@ -176,7 +176,7 @@ class Posts extends Controller
 		// if the user clicked on the Delete button, delete the post...
 		elseif ($this->input->post('delete'))
 		{
-			redirect('admin/posts/confirm/' . $post_id);
+			redirect('admin/posts/confirm/delete/' . $post_id);
 		}
 		
 		// ...else, if he clicked on the Save Button, Update the post
@@ -214,10 +214,10 @@ class Posts extends Controller
 		redirect('admin/posts/index');
 	} // End of delete
 	
-	public function confirm($post_id)
+	public function confirm($action = NULL, $post_id = NULL)
 	{
 		// Check if the post id is valid
-		if (!is_valid_number($post_id))
+		if (empty($action) || empty($post_id) || !is_valid_number($post_id) || !is_valid_action($action) || $this->post_model->get_post($post_id, 'all') === NULL)
 		{
 			$this->session->set_flashdata('notice','Invalid Request');
 			redirect('admin/posts/index');
@@ -225,14 +225,14 @@ class Posts extends Controller
 		
 		$data['view_file'] = 'admin/posts/confirm';
 		$data['question'] = 'Are you sure you want to delete the following post?';
-		$data['post'] = $this->post_model->get_post($post_id,0);
+		$data['post'] = $this->post_model->get_post($post_id, 'all');
 		
 		$this->load->view('admin/admin', $data);
 	} // End of confirm
 	
 	public function view($post_id)
 	{
-		$data['post'] = $this->post_model->get_post($post_id, 0);
+		$data['post'] = $this->post_model->get_post($post_id, 'all');
 		$data['post_id'] = $post_id;
 		
 		// if the post is inactive, let the user know

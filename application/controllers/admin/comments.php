@@ -155,9 +155,9 @@ class Comments extends Controller
 		redirect('admin/comments');
 	} // End of delete
 	
-	public function confirm($comment_id)
+	public function confirm($action = NULL, $comment_id = NULL)
 	{
-		if (!is_valid_number($comment_id))
+		if (empty($action) || empty($comment_id) || !is_valid_number($comment_id) || !is_valid_action($action) || $this->comment_model->get_comment($comment_id) === NULL)
 		{
 			$this->session->set_flashdata('notice','Invalid Request');
 			redirect('admin/comments');

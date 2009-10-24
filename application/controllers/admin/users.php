@@ -76,6 +76,21 @@ class Users extends Controller
 		$this->session->set_flashdata('notice','User Deleted');
 		redirect('admin/users/index');
 	} // End of delete
+	
+	public function confirm($action = NULL, $user_id = NULL)
+	{
+		if (empty($action) || empty($user_id) || !is_valid_number($user_id) || !is_valid_action($action) || $this->user_model->get_user($user_id) === NULL)
+		{
+			$this->session->set_flashdata('notice','Invalid Request');
+			redirect('admin/users/index');
+		}
+		
+		$data['view_file'] = 'admin/users/confirm';
+		$data['question']  = 'Are you sure you want to delete the following user?';
+		$data['user']      =  $this->user_model->get_user($user_id);
+		
+		$this->load->view('admin/admin', $data);
+	} // End of confirm
 
 } // End of Users controller
 
