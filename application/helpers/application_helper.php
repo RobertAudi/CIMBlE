@@ -26,6 +26,26 @@ function is_valid_number($value)
 } // End of is_valid_number
 
 /**
+ * Checks if an action is valid. Here actions are really actions' parameters
+ * This method is mainly used with the confirm action present in the admin controllers
+ *
+ * @param string $action 
+ * @return bool
+ **/
+function is_valid_action($action)
+{
+	$valid_actions = array('delete');
+	if (in_array($action, $valid_actions))
+	{
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
+} // End of is_valid_action
+
+/**
  * Converts an array to breadcrumbs
  * The array must contain one array per level.
  * Each of level Array must contain exactly two elements:
