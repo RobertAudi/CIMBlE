@@ -125,7 +125,7 @@ class Post_model extends Model
 		if (!is_valid_number($post_id))
 			return FALSE;
 		
-		$this->db->delete('posts',array('id' => $post_id));
+		$this->db->delete('posts', array('id' => $post_id));
 		return TRUE;
 	} // End of delete_post
 	

@@ -1,3 +1,5 @@
+<?php if (!$this->azauth->logged_in()) redirect('user/login'); ?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
@@ -29,6 +31,8 @@
 			<!-- The Flash -->
 			<?php if ($this->session->flashdata('notice')): ?>
 				<p class="notice"><?php echo $this->session->flashdata('notice'); ?></p>
+			<?php elseif(isset($notice) && !empty($notice)): ?>
+				<p class="notice"><?php echo $notice; ?></p>
 			<?php endif; ?>
 			
 			<ul id="admin-nav-menu">

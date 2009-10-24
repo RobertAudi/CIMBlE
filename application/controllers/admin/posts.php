@@ -18,8 +18,8 @@ class Posts extends Controller
 	
 	public function index()
 	{
-		// the parameter (1) is used to also display inactive posts in the posts section of the dashboard
-		$posts = $this->post_model->get_posts(1);
+		// the parameter 'all' is used to also display inactive posts in the posts section of the dashboard
+		$posts = $this->post_model->get_posts('all');
 		
 		// if there are no posts we don't want to load the regular posts view file or we'll get an error
 		$data['view_file'] = ($posts['count'] > 0) ? 'admin/posts/index' : 'posts/no-posts';
@@ -158,7 +158,7 @@ class Posts extends Controller
 												),
 												array(
 													'title' => 'Edit Post',
-													'url' => 'admin/posts/edit/'.$post_id
+													'url' => 'admin/posts/edit/' . $post_id
 												)
 											);
 			
@@ -167,7 +167,7 @@ class Posts extends Controller
 			if ($view_data['post'] === NULL)
 			{
 				$this->session->set_flashdata('notice','Invalid Request!');
-				redirect(site_url('admin/posts/index'));
+				redirect('admin/posts/index');
 			}
 			
 			$this->load->view('admin/admin',$view_data);
@@ -176,9 +176,7 @@ class Posts extends Controller
 		// if the user clicked on the Delete button, delete the post...
 		elseif ($this->input->post('delete'))
 		{
-			$this->post_model->delete_post($post_id);
-			$this->session->set_flashdata('notice','Post deleted successfully!');
-			redirect('admin/posts/index');
+			redirect('admin/posts/confirm/' . $post_id);
 		}
 		
 		// ...else, if he clicked on the Save Button, Update the post
@@ -202,6 +200,95 @@ class Posts extends Controller
 			redirect('admin/posts/index');
 		}
 	} // End of edit
+	
+	public function delete($post_id)
+	{
+		// Check if the post id is valid
+		if (!is_valid_number($post_id))
+		{
+			$this->session->set_flashdata('notice','Invalid Request');
+			redirect('admin/posts/index');
+		}
+		$this->post_model->delete_post($post_id);
+		$this->session->set_flashdata('notice','Post deleted successfully!');
+		redirect('admin/posts/index');
+	} // End of delete
+	
+	public function confirm($post_id)
+	{
+		// Check if the post id is valid
+		if (!is_valid_number($post_id))
+		{
+			$this->session->set_flashdata('notice','Invalid Request');
+			redirect('admin/posts/index');
+		}
+		
+		$data['view_file'] = 'admin/posts/confirm';
+		$data['question'] = 'Are you sure you want to delete the following post?';
+		$data['post'] = $this->post_model->get_post($post_id,0);
+		
+		$this->load->view('admin/admin', $data);
+	} // End of confirm
+	
+	public function view($post_id)
+	{
+		$data['post'] = $this->post_model->get_post($post_id, 0);
+		$data['post_id'] = $post_id;
+		
+		// if the post is inactive, let the user know
+		if ($data['post']->active == 0)
+			$data['notice'] = 'This is post is inactive! regular users can\'t view it.';
+		
+		// if the model did not retrieve any post, inform the user and redirect him to the main page
+		if ($data['post'] === NULL)
+		{
+			$this->session->set_flashdata('notice','Invalid Request!');
+			redirect('admin/posts');
+		}
+		
+		// load the comment model
+		$this->load->model('comment_model');
+		
+		// get comments
+		$comments = $this->comment_model->get_comments($post_id);
+		
+		// if there are no comments (yet)
+		if (empty($comments))
+		{
+			// display a message instead of the comments list
+			$data['comments_view_file'] = 'admin/comments/no-comments';
+			$data['comments'] = 'No comments have been posted yet';
+		}
+		else
+		{
+			$data['comments_view_file'] = 'admin/comments/view';
+			$data['comments'] = $comments['list'];
+		}
+		
+		// pass the posts view file path to the view
+		$data['view_file'] = 'admin/posts/view';
+		
+		// used for the breadcrumbs, I don't like the syntax $data['post']->title, it's ugly and confusing
+		$post = $data['post'];
+		
+		// and set up the breadcrumbs
+		$data['section_name'] = array(
+									array(
+										'title' => 'Dashboard',
+										'url' => 'admin/index'
+									),
+									array(
+										'title' => 'Posts',
+										'url' => 'admin/posts/index'
+									),
+									array(
+										'title' => $post->title,
+										'url' => 'admin/posts/view/' . $post_id
+									)
+								);
+		
+		$this->load->view('admin/admin', $data);
+	} // End of view
 	
 } // End of Posts controller
 

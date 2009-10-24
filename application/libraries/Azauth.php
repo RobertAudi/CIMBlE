@@ -1,26 +1,34 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 /**
- * Azauth Authentication Library
+ * Azauth CodeIgniter Authentication Library
  * 
  * @package Azauth
  * @category CodeIgniter Library
- * @author AzizLight
+ * @author Aziz Light
  * @link http://github.com/AzizLight/Azauth
  * @version 0.0.2
- * @copyright Aziz Light 2009
+ * @copyright Copyright (c) 2009, Aziz Light
+ * @license http://www.opensource.org/licenses/mit-license.php MIT License
  **/
 class Azauth
 {
-	// private variable that will be used to store the CodeIgniter object
+	/**
+	 * private variable that will be used to store the CodeIgniter object
+	 *
+	 * @access private
+	 * @var object
+	 **/
 	private $_ci;
 	
 	// constructor
 	public function __construct()
 	{
+		log_message('debug','Azauth CodeIgniter Authentication Library Initialized');
+		
 		// assign the CodeIgniter object to a private variable
 		$this->_ci =& get_instance();
 		
-		// Load necessary libraries and helpers
+		// load necessary libraries and helpers
 		$this->_ci->load->library('session');
 		$this->_ci->load->helper('url');
 		$this->_ci->load->helper('email');

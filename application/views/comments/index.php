@@ -11,7 +11,7 @@
 					<?php echo $comment->author_name; ?>
 				<?php endif; ?>
 			</p>
-			<p><?php echo $comment->created_at; ?></p>
+			<p><?php echo format_date($comment->created_at); ?></p>
 		</div> <!--END OF comment-meta-->
 	</div> <!--END OF comment-->
 <?php endforeach; ?>

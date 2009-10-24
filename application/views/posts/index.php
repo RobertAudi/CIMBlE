@@ -7,7 +7,7 @@
 			echo '<p class="read-more">' . anchor('posts/view/'.$post->id,'read more >>') . '</p>';
 			?>
 		</div> <!--END OF post-content-->
-		<p class="post-meta">Published on <?php echo post_date($post->created_at); ?> by <?php echo $post->username; ?></p>
+		<p class="post-meta">Published on <?php echo format_date($post->created_at); ?> by <?php echo $post->username; ?></p>
 	</div> <!--END OF post-->
 <?php endforeach; ?>
 

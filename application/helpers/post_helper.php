@@ -1,17 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * Formats the date passed as argument
- *
- * @param string $date
- * @return string
- */
-function post_date($date)
-{
-	return date('D jS Y - H:i', strtotime($date));
-} // End of post_date
-
-/**
  * Generate an exerpt if there is an hr tag in the post
  * Same effect as the <!--more--> tag in Wordpress
  *
@@ -77,7 +66,7 @@ function is_active_in_english($active)
  * so that the correct posts are displayed on each page when
  * using CodeIgniter's pagination class
  *
- * @todo move this method to the application_helper
+ * @todo extend CI's Pagination class
  * @param array $posts 
  * @param int $number_of_posts 
  * @param int $number_of_posts_per_page 
@@ -114,7 +103,7 @@ function paginate($posts, $number_of_posts, $number_of_posts_per_page, $offset)
 /**
  * Gets the page number the user is on
  *
- * @todo move this method to the application_helper
+ * @todo extend CI's Pagination class
  * @param int $offset
  * @param int $number_of_posts_per_page 
  * @return int

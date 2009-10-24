@@ -14,17 +14,28 @@ class Comments extends Controller
 		$this->load->helper('post_helper');
 	}
 	
-	public function index()
+	public function index($status = NULL)
 	{
-		// get all the comments from the database
-		$comments = $this->comment_model->get_comments();
+		// by default we want to display the ham only
+		if ($status !== 'ham' && $status !== 'spam')
+		{
+			if (!empty($status))
+				$data['notice'] = 'Invalid Request';
+			$status = 'ham';
+		}
+		
+		// get either the ham or the spam depending on the location of the user
+		if ($status === 'ham' || $status === 'spam')
+		{
+			$data['section_title'] = ucfirst($status);
+			$comments = $this->comment_model->get_comments('',$status);
+		}
 		
 		// if there are no comments, we load a different view so that we don't get an error
 		if ($comments['count'] == 0)
 		{
-			$data['comments']  = 'No comments have been posted yet...';
+			$data['comments']  = 'No ' . $status . ' comments have been posted yet...';
 			$data['view_file'] = 'comments/no-comments';
-			$this->load->view('admin/admin', $data);
 		}
 		else
 		{
@@ -38,31 +49,27 @@ class Comments extends Controller
 			/* - Pagination - */
 			/* -------------- */
 			
-			/*
-				TODO - Fix the fucking pagination!
-			*/
-			
 			// configuration of the comments pagination
 			$data['comments_per_page'] = 10;
-			$data['offset'] = $this->uri->segment(4);
+			$data['offset'] = $this->uri->segment(5);
 			
 			// If the offset is invalid or NULL (in which case the user goes back to the first page anyway)
 			// the user is sent back to the first page and a feedback message is displayed
 			if ((!is_valid_number($data['offset']) || !array_key_exists($data['offset'],$data['comments'])) && !empty($data['offset']))
 			{
 				$this->session->set_flashdata('notice','Invalid Request');
-				redirect('admin/comments/index/0');
+				redirect('admin/comments/index/' . $status . '/0');
 			}
 			
 			// load the pagination library
 			$this->load->library('pagination');
 			
 			// configuration of the pagination links
-			$config['base_url']       = site_url('/admin/comments/index');
+			$config['base_url']       = site_url('/admin/comments/index/' . $status);
 			$config['total_rows']     = $data['comments_count'];
 			$config['per_page']       = $data['comments_per_page'];
 			$config['num_links']      = 10;
-			$config['uri_segment']    = 4;
+			$config['uri_segment']    = 5;
 			$config['full_tag_open']  = '<div class="pagination_links"';
 			$config['full_tag_close'] = '</div>';
 			
@@ -84,6 +91,10 @@ class Comments extends Controller
 										array(
 											'title' => 'Comments',
 											'url' => 'admin/comments/index'
+										),
+										array(
+											'title' => ucfirst($status),
+											'url' => 'admin/comments/' . $status
 										)
 									);
 			
@@ -91,16 +102,74 @@ class Comments extends Controller
 			if($comments['count'] > $config['per_page'])
 			{
 				array_push($data['section_name'], 	array(
-														'title' => 'page' . get_page_number($data['offset'], $data['comments_per_page']),
+														'title' => 'page ' . get_page_number($data['offset'], $data['comments_per_page']),
 														'url' => 'admin/comments/index/' . $data['offset']
 													)
 				);
 			}
-			
-			$this->load->view('admin/admin', $data);
 		}
+		
+		$this->load->view('admin/admin', $data);
+		
 	} // End of index
-
+	
+	public function submit_ham($comment_id)
+	{
+		if (!is_valid_number($comment_id))
+		{
+			log_message('error','Could not Submit ham, invalid comment id');
+			$this->session->set_flashdata('notice','Could not Submit ham. Try again later please.');
+			redirect('admin/comments/index/spam');
+		}
+		
+		$this->comment_model->submit_ham($comment_id);
+		$this->session->set_flashdata('notice','Ham submitted!');
+		redirect('admin/comments/index/spam');
+	} // End of submit_ham
+	
+	public function submit_spam($comment_id)
+	{
+		if (!is_valid_number($comment_id))
+		{
+			log_message('error','Could not Submit ham, invalid comment id');
+			$this->session->set_flashdata('notice','Could not Submit spam. Try again later please.');
+			redirect('admin/comments/index/ham');
+		}
+		
+		$this->comment_model->submit_spam($comment_id);
+		$this->session->set_flashdata('notice','Spam submitted!');
+		redirect('admin/comments/index/ham');
+	} // End of submit_spam
+	
+	public function delete($comment_id)
+	{
+		if (!is_valid_number($comment_id))
+		{
+			log_message('error','Could not delete comment, invalid comment id');
+			$this->session->set_flashdata('notice','Could not delete comment. Try again later please.');
+			redirect('admin/comments');
+		}
+		
+		$this->comment_model->delete($comment_id);
+		$this->session->set_flashdata('notice','Comment deleted!');
+		redirect('admin/comments');
+	} // End of delete
+	
+	public function confirm($comment_id)
+	{
+		if (!is_valid_number($comment_id))
+		{
+			$this->session->set_flashdata('notice','Invalid Request');
+			redirect('admin/comments');
+		}
+		
+		$data['view_file'] = 'admin/comments/confirm';
+		$data['question'] = 'Are you sure you want to delete the following comment?';
+		$data['comment'] = $this->comment_model->get_comment($comment_id);
+		
+		$this->load->view('admin/admin', $data);
+	} // End of confirm
+	
 } // End of Comments controller
 
 /* End of file comments.php */

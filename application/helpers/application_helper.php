@@ -1,6 +1,18 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
+ * Formats the date passed as argument
+ *
+ * @param string $date
+ * @return string
+ */
+function format_date($date)
+{
+	return date('D jS M Y - H:i', strtotime($date));
+} // End of format_date
+
+
+/**
  * Checks if the value is actually an int.
  * The value can be either an int or a string
  * Usefull when retrieving an id or a page number from the URI

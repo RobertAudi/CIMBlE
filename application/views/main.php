@@ -30,6 +30,8 @@
 			<!-- The Flash -->
 			<?php if ($this->session->flashdata('notice')): ?>
 				<p class="notice"><?php echo $this->session->flashdata('notice'); ?></p>
+			<?php elseif(isset($notice) && !empty($notice)): ?>
+				<p class="notice"><?php echo $notice; ?></p>
 			<?php endif; ?>
 			
 			<!-- Dynamic view file -->
