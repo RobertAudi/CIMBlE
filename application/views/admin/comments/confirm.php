@@ -8,5 +8,5 @@
 	</ul>
 	<p><?php echo $comment->body; ?></p>
 </div>
-<p><a href="<?php echo site_url('admin/comments/delete/' . $comment->id) ?>">Delete!</a></p>
+<p><a href="<?php echo site_url('admin/comments/confirm/delete/' . $comment->id) ?>">Delete!</a></p>
 <p><a href="<?php echo site_url('admin/comments') ?>">Cancel!</a></p>

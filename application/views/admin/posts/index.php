@@ -19,6 +19,7 @@
 				<td><?php echo is_active_in_english($post->active); ?></td>
 				<td><a href="<?php echo site_url('admin/posts/edit/' . $post->id); ?>">Edit</a></td>
 				<td><a href="<?php echo site_url('admin/posts/view/' . $post->id) ?>">View</a></td>
+				<td><a href="<?php echo site_url('admin/posts/confirm/delete/' . $post->id) ?>">Delete</a></td>
 			</tr>
 		<?php endforeach; ?>
 	</table>

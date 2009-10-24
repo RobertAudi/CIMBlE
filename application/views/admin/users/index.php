@@ -8,7 +8,7 @@
 	<tr>
 		<td><?php echo $user->username; ?></td>
 		<td><?php echo $user->email; ?></td>
-		<td><a href="<?php echo site_url('admin/users/delete/'.$user->id) ?>">Delete</a></td>
+		<td><a href="<?php echo site_url('admin/users/confirm/delete/'.$user->id) ?>">Delete</a></td>
 	</tr>
 <?php endforeach; ?>
 </table>

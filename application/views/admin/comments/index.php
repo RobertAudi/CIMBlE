@@ -22,7 +22,7 @@
 				<td><?php echo format_date($comment->created_at); ?></td>
 				<td><?php echo $comment->is_spam; ?></td>
 				<td><?php echo ((int)$comment->is_spam === 1) ? '<a href="' . site_url('admin/comments/submit_ham/' . $comment->id) . '">Ham</a>' : '<a href="' . site_url('admin/comments/submit_spam/' . $comment->id) . '">Spam</a>'; ?></td>
-				<td><a href="<?php echo site_url('admin/comments/confirm/' . $comment->id) ?>">Delete</a></td>
+				<td><a href="<?php echo site_url('admin/comments/confirm/delete/' . $comment->id) ?>">Delete</a></td>
 				<!--
 					TODO replace the above with the following: serialize the object and store it in the session then in the confirm page unserialize it and use it
 				-->
