@@ -26,6 +26,28 @@ class User_model extends Model
 		// ...else return NULL
 		return NULL;
 	} // End of get_users
+
+	/**
+	 * Get one user from the database
+	 *
+	 * @access public
+	 * @param int $user_id 
+	 * @return object
+	 **/
+	public function get_user($user_id = NULL)
+	{
+		if(empty($user_id) || !is_valid_number($user_id))
+			return NULL;
+		
+		$this->db->select('users.id, users.username, users.email');
+		$query = $this->db->get_where('users', array('id' => $user_id), 1);
+		
+		if ($query->num_rows == 1)
+			return $query->row();
+		
+		return NULL;
+		
+	} // End of get_user
 	
 	/**
 	 * Count the number of users registered
