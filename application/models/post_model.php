@@ -59,7 +59,7 @@ class Post_model extends Model
 		$this->db->from('posts');
 		$this->db->join('users', 'posts.user_id = users.id', 'left');
 		$this->db->where('posts.id',$post_id);
-		if ($is_active == 1)
+		if ($is_active == 1 || $is_active != 'all')
 			$this->db->where('posts.active',1);
 		$this->db->limit(1);
 		$query = $this->db->get();
