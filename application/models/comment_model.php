@@ -1,16 +1,16 @@
-<?php
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class Comment_model extends Model
 {
-	// constructor
+	/**
+	 * The Constructor!
+	 */
 	public function __construct()
 	{
 		parent::Model();
 	}
 	
-// ==================
-// = Public Methods =
-// ==================
+// ------------------------------------------------------------------------
 	
 	/**
 	 * Get all the comments or a set number of them for the current post.
@@ -22,26 +22,31 @@ class Comment_model extends Model
 	 * @param int|string $num
 	 * @return array
 	 **/
-	public function get_comments($post_id = NULL, $num = NULL)
+	public function get_comments($post_id = NULL, $num = 'ham')
 	{
 		if(!empty($post_id) && !is_valid_number($post_id))
 			return NULL;
+			
+		// if (is_int($num) || is_string($num))
+		// 	return NULL;
+		
+		// FIXME - Right now if I want to get 10 comments that are not spam I can't. Fix: I need to add a third optional parameter that gives the choice to retrieve only the ham (default), only the spam or all comments
 		
 		// get the comments
-		$this->db->select('a.id, a.post_id, a.author_name, a.author_email, a.author_website, a.body, a.created_at, a.parent_id, a.is_spam, posts.title');
+		$this->db->select('a.id, a.post_id, a.author_name, a.author_email, a.author_website, a.body, a.created_at, a.parent_id, a.is_spam, posts.title AS post_title'); // CHANGED - for some reason I was retrieving the title of the post the comment belongs to.
 		$this->db->from('comments a');
 		$this->db->join('posts', 'a.post_id = posts.id', 'left');
 		if (is_valid_number($post_id))
 			$this->db->where('a.post_id', $post_id);
-		if (!is_valid_number($num))
+		if (is_valid_string($num))
 		{
-			if ($num === 'ham')
-			{
-				$this->db->where('a.is_spam', 0);
-			}
-			elseif ($num === 'spam')
+			if ($num === 'spam')
 			{
 				$this->db->where('a.is_spam', 1);
+			}
+			else
+			{
+				$this->db->where('a.is_spam', 0);
 			}
 		}
 		$this->db->order_by('a.created_at', 'desc');
@@ -54,11 +59,18 @@ class Comment_model extends Model
 		
 		// if there is any comments, return the list of comments and their count
 		if ($count > 0)
-			return array('list' => $query->result(), 'count' => $count);
+		{
+			$comments = $query->result();
+			if ($num === 'formatted')
+				$comments = $this->_format_comments_array($comments);
+			return array('list' => $query->result(), 'count' => $count, 'new_comments_array' => $comments);
+		}
 		
 		// else return NULL
 		return NULL;
 	} // End of get_comments
+	
+// ------------------------------------------------------------------------
 	
 	/**
 	 * Get exately one comment from the database
@@ -90,6 +102,8 @@ class Comment_model extends Model
 		return $query->row();
 	} // End of get_comment
 	
+// ------------------------------------------------------------------------
+	
 	/**
 	 * Submit a new comment to the current post
 	 *
@@ -106,7 +120,9 @@ class Comment_model extends Model
 		$this->db->insert('comments', $comment);
 		return TRUE;
 	} // End of add_comment
-		
+	
+// ------------------------------------------------------------------------
+	
 	/**
 	 * Set a comment to ham and submit the ham to the askismet server
 	 *
@@ -124,6 +140,8 @@ class Comment_model extends Model
 		$this->load->library('azakis');
 		return $this->azakis->submit_ham($this->_get_minimum_comment_data($comment_id));
 	} // End of submit_ham
+	
+// ------------------------------------------------------------------------
 	
 	/**
 	 * Set a comment to spam and submit the spam to the askismet server
@@ -143,6 +161,8 @@ class Comment_model extends Model
 		return $this->azakis->submit_spam($this->_get_minimum_comment_data($comment_id));
 	} // End of submit_spam
 	
+// ------------------------------------------------------------------------
+	
 	/**
 	 * Delete one comment from the database
 	 *
@@ -158,19 +178,15 @@ class Comment_model extends Model
 		return TRUE;
 	} // End of delete
 	
-// -------------------------
-// - End of Public Methods -
-// =========================
-	
-// ===================
-// = Private Methods =
-// ===================
+// ------------------------------------------------------------------------
+// Private Methods
+// ------------------------------------------------------------------------
 	
 	/**
 	 * Get the minimum info about one comment from the database
 	 * Intended to be used with the submit_ham and submit_spam methods
 	 *
-	 * @todo rename that fucking method, its name sucks
+	 * @todo - rename that fucking method, its name sucks
 	 * @access private
 	 * @param int $comment_id 
 	 * @return array
@@ -189,9 +205,25 @@ class Comment_model extends Model
 		return $query->row_array();
 	} // End of _get_minimum_comment_data
 	
-// --------------------------
-// - End of Private Methods -
-// ==========================
+// ------------------------------------------------------------------------
+	
+	/**
+	 * Rearrange the comments array and
+	 * add depth values to each comment
+	 * to enable comment replies
+	 *
+	 * @access private
+	 * @param array $comments : The array of comments retrieved from the database
+	 * @return array|bool
+	 */
+	private function _format_comments_array($comments)
+	{
+		if (!is_array($comments))
+			return FALSE;
+		$this->load->library('azcom');
+		
+		return $this->azcom->init($comments);
+	} // End of _format_comments_array
 	
 } // End of Comment_model
 

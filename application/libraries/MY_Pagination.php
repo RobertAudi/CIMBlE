@@ -11,6 +11,26 @@
  **/
 class MY_Pagination extends CI_Pagination
 {
+	// private $num_links;
+	// private $per_page;
+	// private $uri_segment;
+	// private $full_tag_open;
+	// private $full_tag_close;
+	
+	private $_ci;
+	
+// ------------------------------------------------------------------------
+	
+	
+	public function __construct()
+	{
+		parent::__construct();
+		
+		$this->_ci =& get_instance();
+	} // End of __construct
+	
+// ------------------------------------------------------------------------
+	
 	/**
 	 * Generate the pagination for the given data.
 	 * The data array must contain two keys: the offset
@@ -58,6 +78,8 @@ class MY_Pagination extends CI_Pagination
 		return array('list' => $list, 'links' => $links);
 	} // End of generate
 	
+// ------------------------------------------------------------------------
+	
 	/**
 	 * Gets the page number the user is on
 	 *
@@ -83,6 +105,8 @@ class MY_Pagination extends CI_Pagination
 			return ($offset / $number_of_posts_per_page) + 1;
 		}
 	} // End of get_page_number
+	
+// ------------------------------------------------------------------------
 	
 	/**
 	 * Create a temporary array of items out of a bigger array
@@ -119,6 +143,25 @@ class MY_Pagination extends CI_Pagination
 		
 		return $page_items;
 	} // End of paginate
+	
+// ------------------------------------------------------------------------
+// Private Methods
+// ------------------------------------------------------------------------
+	
+	/* FIXME !!!!!!!
+	private function _configure()
+	{
+		$config = $this->_ci->config->item('my_pagination_config');
+		
+		foreach ($config as $key => $value)
+		{
+			if (isset($this->$key))
+			{
+				$this->$key = $value;
+			}
+		}
+	} // End of _configure
+	*/
 	
 } // End of MY_Pagination class
 

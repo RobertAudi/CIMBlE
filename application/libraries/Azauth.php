@@ -20,7 +20,11 @@ class Azauth
 	 **/
 	private $_ci;
 	
-	// constructor
+// ------------------------------------------------------------------------
+	
+	/**
+	 * The Constructor!
+	 */
 	public function __construct()
 	{
 		log_message('debug','Azauth CodeIgniter Authentication Library Initialized');
@@ -35,9 +39,8 @@ class Azauth
 		$this->_ci->load->helper('string');
 	}
 	
-// ==================
-// = Public Methods =
-// ==================
+// ------------------------------------------------------------------------
+	
 	/**
 	 * Add a new user to the database
 	 *
@@ -75,6 +78,8 @@ class Azauth
 		return TRUE;
 	} // End of register
 	
+// ------------------------------------------------------------------------
+	
 	/**
 	 * Logs a user in
 	 *
@@ -98,7 +103,7 @@ class Azauth
 		$query = $this->_ci->db->get('users');
 		$row = $query->row();
 		
-		// TODO: add the group id to the session too
+		// TODO - add the group id to the session too
 		// prepare the data array that we will store in the session.
 		$data = array(
 					'username'  => $username,
@@ -111,6 +116,8 @@ class Azauth
 		$this->_ci->session->set_userdata($data);
 		return TRUE;
 	} // End of login
+	
+// ------------------------------------------------------------------------
 	
 	/**
 	 * Check if a user is logged in or not
@@ -134,6 +141,8 @@ class Azauth
 		}
 	} // End of logged_in
 	
+// ------------------------------------------------------------------------
+	
 	/**
 	 * Logs out any user that might be logged in
 	 *
@@ -145,6 +154,8 @@ class Azauth
 		// destroy all the session variables
 		$this->_ci->session->sess_destroy();
 	} // End of logout
+	
+// ------------------------------------------------------------------------
 	
 	/**
 	 * Retrieve information about the user currently logged in
@@ -174,13 +185,10 @@ class Azauth
 		}
 	} // End of get_user
 	
-// -------------------------
-// - End of Public Methods -
-// =========================
+// ------------------------------------------------------------------------
+// Private Methods
+// ------------------------------------------------------------------------
 	
-// ===================
-// = Private Methods =
-// ===================
 	/**
 	 * Encrypts the password and then check in the database if
 	 * the password of the user passed as argument is the same one.
@@ -208,6 +216,8 @@ class Azauth
 		}
 		return FALSE;
 	} // End of _check_password
+	
+// ------------------------------------------------------------------------
 	
 	/**
 	 * Generate a unique salt.
@@ -239,10 +249,6 @@ class Azauth
 		return array('password' => $encrypted, 'salt' => $salt);
 	} // End of _encrypt
 	
-// --------------------------
-// - End of Private Methods -
-// ==========================
-
 } // End of Azauth Class
 
 /* End of file Azauth.php */

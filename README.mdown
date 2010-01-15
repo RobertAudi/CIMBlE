@@ -1,0 +1,33 @@
+# CodeIgniter Minimalist Blog Engine
+
+This is my first CodeIgniter Project, it's a minimalist blog engine, a little
+too minimalist at the moment, but it's going to evolve slowly.
+
+It's intended to be user for a personal blog with one blog writer, thus the
+excessive simplicity.
+
+At the moment, there is just the PHP and the HTML. I will add the styling as
+soon as possible.
+
+	NOTE: To create a new user for the first time I created a temporary
+	"method" (for now):
+
+	Just point your browser to {base_url()}/user/signup
+	ie: http://localhost/cimble/user/signup
+
+	This will create the following user:
+
+		email    :  admin
+		password :  admin
+
+## Changelog
+### 15/01/10
+* Integrated the new breadcrumbs library, Azbraz. Also breadcrumbs generate themselves according to the URI.
+* Integrated FirePHP for making debugging easier. This won't be in the final release.
+* RSS Feed!
+* Threaded comments. Although you won't directly be able to see it since there is no style, you can now reply to comments.
+* Integrated HTMLPurifier for security. Posting a new comment now takes a little bit longer but it's worth it (necessary too)
+* Cleaned up the code a bit.
+* I removed the user_guide
+
+I probably forgot some things too...

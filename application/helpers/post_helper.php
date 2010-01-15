@@ -19,6 +19,8 @@ function read_more($string)
 	}
 } // End of read_more
 
+// ------------------------------------------------------------------------
+
 /**
  * Checks if post is active
  * Converts 1 to TRUE and 0 to FALSE
@@ -43,6 +45,8 @@ function is_active($num)
 	}
 } // End of is_active
 
+// ------------------------------------------------------------------------
+
 /**
  * Translates the active state of a post in english
  *
@@ -61,12 +65,14 @@ function is_active_in_english($active)
 	return $active_in_english;
 } // End of is_active_in_english
 
+// ------------------------------------------------------------------------
+
 /**
  * Create a temporary array of posts out of a bigger array
  * so that the correct posts are displayed on each page when
  * using CodeIgniter's pagination class
  *
- * @todo extend CI's Pagination class
+ * @todo - extend CI's Pagination class
  * @param array $posts 
  * @param int $number_of_posts 
  * @param int $number_of_posts_per_page 
@@ -100,10 +106,12 @@ function paginate($posts, $number_of_posts, $number_of_posts_per_page, $offset)
 	return $page_posts;
 } // End of paginate
 
+// ------------------------------------------------------------------------
+
 /**
  * Gets the page number the user is on
  *
- * @todo extend CI's Pagination class
+ * @todo - extend CI's Pagination class
  * @param int $offset
  * @param int $number_of_posts_per_page 
  * @return int
@@ -127,6 +135,8 @@ function get_page_number($offset, $number_of_posts_per_page)
 	}
 } // End of get_page_number
 
+// ------------------------------------------------------------------------
+
 /**
  * Display the Edit link to edit each post
  *
@@ -139,11 +149,13 @@ function display_admin_controls($post_id, $seperator = '|')
 	return ($seperator . ' <a href="' . site_url('admin/posts/edit/' . $post_id) . '">Edit</a>');
 } // End of display_admin_controls
 
+// ------------------------------------------------------------------------
+
 /**
  * Repopulates a form in case the form validation fails
  * $original is the value that the field initially had. ie: $post->title
  * $modified is the value that the field has if it has
- *   been modified before the validation fails. ie: $this->input->post('title)
+ * been modified before the validation fails. ie: $this->input->post('title)
  *
  * @param string $original 
  * @param string $modified 

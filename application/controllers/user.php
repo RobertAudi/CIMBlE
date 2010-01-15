@@ -1,4 +1,4 @@
-<?php
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class User extends Controller
 {
@@ -67,13 +67,18 @@ class User extends Controller
 		
 		if ($this->user_model->add_user($username, $password, $email))
 		{
-			die('user added');
+			$this->session->set_flashdata('notice','New User Added');
+			redirect('posts');
 		}
 		else
 		{
-			die('error');
+			$this->session->set_flashdata('notice','Could not add a new user...');
+			redirect('posts');
 		}
 		
 	} // End of add
 	
 } // End of User controller
+
+/* End of file user.php */
+/* Location: ./application/controllers/user.php */

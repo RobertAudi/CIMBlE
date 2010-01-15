@@ -18,13 +18,13 @@
 			<tr>
 				<td><?php echo $comment->author_name; ?></td>
 				<td><?php echo truncate_string($comment->body, 40); ?></td>
-				<td><a href="<?php echo site_url('posts/view/' . $comment->post_id) ?>"><?php echo truncate_string($comment->title, 30); ?></a></td>
+				<td><a href="<?php echo site_url('posts/view/' . $comment->post_id) ?>#comment-<?php echo $comment->id; ?>"><?php echo truncate_string($comment->post_title, 30); ?></a></td>
 				<td><?php echo format_date($comment->created_at); ?></td>
 				<td><?php echo $comment->is_spam; ?></td>
 				<td><?php echo ((int)$comment->is_spam === 1) ? '<a href="' . site_url('admin/comments/submit_ham/' . $comment->id) . '">Ham</a>' : '<a href="' . site_url('admin/comments/submit_spam/' . $comment->id) . '">Spam</a>'; ?></td>
 				<td><a href="<?php echo site_url('admin/comments/confirm/delete/' . $comment->id) ?>">Delete</a></td>
 				<!--
-					TODO replace the above with the following: serialize the object and store it in the session then in the confirm page unserialize it and use it
+					TODO - replace the above with the following: serialize the object and store it in the session then in the confirm page unserialize it and use it
 				-->
 			</tr>
 		<?php endforeach ?>

@@ -7,5 +7,5 @@
 	</ul>
 	<p><?php echo $post->body; ?></p>
 </div>
-<p><a href="<?php echo site_url('admin/posts/delete/' . $post->id) ?>">Delete!</a></p>
+<p><a href="<?php echo site_url('admin/posts/' . $action . '/' . $post->id) ?>"><?php echo ucfirst($action); ?>!</a></p>
 <p><a href="<?php echo site_url('admin/posts') ?>">Cancel!</a></p>

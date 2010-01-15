@@ -1,4 +1,4 @@
-<?php
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 #
 # Markdown  -  A text-to-HTML conversion tool for web writers
 #
@@ -1707,4 +1707,6 @@ negligence or otherwise) arising in any way out of the use of this
 software, even if advised of the possibility of such damage.
 
 */
-?>
+
+/* End of file markdown_helper.php */
+/* Location: ./application/helpers/markdown_helper.php */

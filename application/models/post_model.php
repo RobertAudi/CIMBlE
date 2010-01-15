@@ -1,12 +1,16 @@
-<?php
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class Post_model extends Model
 {
-	// constructor
+	/**
+	 * The Constructor!
+	 */
 	public function __construct()
 	{
 		parent::Model();
 	}
+	
+// ------------------------------------------------------------------------
 	
 	/**
 	 * Retrieves all or some ofthe posts from the database.
@@ -26,8 +30,14 @@ class Post_model extends Model
 		$this->db->select('posts.id, posts.title, posts.body, posts.created_at, posts.updated_at, posts.active, users.username');
 		$this->db->from('posts');
 		$this->db->join('users', 'posts.user_id = users.id', 'left');
-		if ($num !== 'all' && !is_valid_number($num))
-			$this->db->where('posts.active',1);
+		if ($num == 'drafts')
+		{
+			$this->db->where('posts.active', 0);
+		}
+		elseif ($num !== 'all' && (is_valid_number($num) || empty($num)))
+		{
+			$this->db->where('posts.active', 1);
+		}
 		$this->db->order_by('posts.created_at', 'desc');
 		if (is_valid_number($num)) 
 			$this->db->limit($num);
@@ -42,6 +52,8 @@ class Post_model extends Model
 		// if the query did not retrieve any data, return NULL
 		return NULL;
 	} // End of get_posts
+	
+// ------------------------------------------------------------------------
 	
 	/**
 	 * Get one post from the database
@@ -72,9 +84,9 @@ class Post_model extends Model
 		return NULL;
 	} // End of get_post
 	
-// =================
-// = Admin Methods =
-// =================
+// ------------------------------------------------------------------------
+// Admin Methods
+// ------------------------------------------------------------------------
 	
 	/**
 	 * Inserts new post in the database.
@@ -92,6 +104,8 @@ class Post_model extends Model
 		$this->db->insert('posts',$post);
 		return TRUE;
 	} // End of new_post
+	
+// ------------------------------------------------------------------------
 	
 	/**
 	 * Update an existing post
@@ -111,10 +125,10 @@ class Post_model extends Model
 		$this->db->update('posts',$post);
 	} // End of update_post
 	
+// ------------------------------------------------------------------------
+	
 	/**
 	 * Deletes one post from the database.
-	 *
-	 * @todo send the user to a confirmation page before deleting a post
 	 *
 	 * @access public
 	 * @param int $post_id 
@@ -129,9 +143,34 @@ class Post_model extends Model
 		return TRUE;
 	} // End of delete_post
 	
-// ------------------------
-// - End of Admin Methods -
-// ========================
+// ------------------------------------------------------------------------
+	
+	/*
+		TODO - document method!
+	*/
+	public function toggle_status($post_id, $status)
+	{
+		$this->firephp->fb($post_id); // DEBUG <-
+		
+		if (!is_valid_number($post_id))
+		{
+			log_message('error','post_model.php:145 : The post id you passed is not a valid number!');
+			return FALSE;
+		}
+		
+		if ($status === 'active')
+		{
+			$new_status = array('active' => 0);
+		}
+		elseif ($status === 'inactive')
+		{
+			$new_status = array('active' => 1);
+		}
+		
+		$this->db->where('id', (int)$post_id);
+		$this->db->update('posts', $new_status);
+		return TRUE;
+	} // End of toggle_status
 	
 } // End of Post_model
 

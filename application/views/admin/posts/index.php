@@ -14,12 +14,14 @@
 			<tr>
 				<td><a href="<?php echo site_url('admin/posts/edit/' . $post->id); ?>"><?php echo $post->title; ?></a></td>
 				<td><?php echo $post->username ?></td>
-				<td><?php echo format_date($post->created_at); ?></td>
-				<td><?php echo format_date($post->updated_at); ?></td>
+				<td><?php echo format_date($post->created_at, 'short'); ?></td>
+				<td><?php echo format_date($post->updated_at, 'short'); ?></td>
 				<td><?php echo is_active_in_english($post->active); ?></td>
 				<td><a href="<?php echo site_url('admin/posts/edit/' . $post->id); ?>">Edit</a></td>
 				<td><a href="<?php echo site_url('admin/posts/view/' . $post->id) ?>">View</a></td>
 				<td><a href="<?php echo site_url('admin/posts/confirm/delete/' . $post->id) ?>">Delete</a></td>
+				<?php $status_action = ((bool)$post->active === TRUE) ? 'unpublish' : 'publish'; ?>
+				<td><a href="<?php echo site_url('admin/posts/confirm/' . $status_action . '/' . $post->id) ?>"><?php echo ucfirst($status_action); ?></a></td>
 			</tr>
 		<?php endforeach; ?>
 	</table>

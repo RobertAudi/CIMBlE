@@ -1,23 +1,21 @@
-<?php
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Dashboard extends Controller
+class Dashboard extends MY_Controller
 {
 	// constructor
 	public function __construct()
 	{
-		parent::Controller();
+		parent::__construct();
 	}
 	
 	public function index()
 	{
+		$data['breadcrumbs'] = $this->azbraz->generate();
 		$data['view_file'] = 'admin/dashboard';
-		$data['section_name'] = 	array(
-										array(
-											'title' => 'Dashboard',
-											'url' => 'admin'
-										)
-									);
-		$this->load->view('admin/admin', $data);
+		$this->load->view($this->main_admin_view, $data);
 	} // End of index
 
 } // End of Dashboard controller
+
+/* End of file dashboard.php */
+/* Location: ./application/controllers/admin/dashboard.php */

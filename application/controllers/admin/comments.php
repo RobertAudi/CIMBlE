@@ -1,18 +1,23 @@
-<?php
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Comments extends Controller
+class Comments extends MY_Controller
 {
-	// constructor
+	/**
+	 * The Constructor!
+	 */
 	public function __construct()
 	{
-		parent::Controller();
+		parent::__construct();
 		
-		// load the comment model
+		$this->output->enable_profiler(TRUE); // DEBUG <-
+		
 		$this->load->model('comment_model');
 		
 		// load the post_helper so that the pagination works fine -- temporary
 		$this->load->helper('post_helper');
 	}
+	
+// ------------------------------------------------------------------------
 	
 	public function index($status = NULL)
 	{
@@ -45,9 +50,9 @@ class Comments extends Controller
 			$data['comments_count'] = $comments['count'];
 			$data['comments'] = $comments['list'];
 			
-			/* -------------- */
-			/* - Pagination - */
-			/* -------------- */
+			// ------------------------------------------------------------------------
+			// Pagination
+			// ------------------------------------------------------------------------
 			
 			// configuration of the comments pagination
 			$data['comments_per_page'] = 10;
@@ -82,36 +87,28 @@ class Comments extends Controller
 			// dynamically generate the posts pagination everytime the user clicks on a pagination link
 			$data['comments'] = paginate($comments['list'], $data['comments_count'], $data['comments_per_page'], $data['offset']);
 			
-			// Generate the dynamic breadcrumbs
-			$data['section_name'] = array(
-										array(
-											'title' => 'Dashboard',
-											'url' => 'admin'
-										),
-										array(
-											'title' => 'Comments',
-											'url' => 'admin/comments/index'
-										),
-										array(
-											'title' => ucfirst($status),
-											'url' => 'admin/comments/' . $status
-										)
-									);
+			// ------------------------------------------------------------------------
 			
-			// the page number segment of the breadcrumbs will only appear if there is at least two pages
-			if($comments['count'] > $config['per_page'])
-			{
-				array_push($data['section_name'], 	array(
-														'title' => 'page ' . get_page_number($data['offset'], $data['comments_per_page']),
-														'url' => 'admin/comments/index/' . $data['offset']
-													)
-				);
-			}
+			// ------------------------------------------------------------------------
+			// Breadcrumbs
+			// ------------------------------------------------------------------------
+			$_seg_title  = 'page ' . get_page_number($data['offset'], $data['comments_per_page']);
+			$_seg_url    = 'admin/comments/index/' . $data['offset'];
+			$breadcrumbs = $this->azbraz->new_segment($_seg_title, $_seg_url);
+			
+			$_seg_title  = ucfirst($status);
+			$_seg_url    = 'admin/comments/' . $status;
+			$breadcrumbs = $this->azbraz->new_segment($_seg_title, $_seg_url);
+			
+			$data['breadcrumbs'] = $this->azbraz->generate($breadcrumbs);
+			// ------------------------------------------------------------------------
 		}
 		
-		$this->load->view('admin/admin', $data);
+		$this->load->view($this->main_admin_view, $data);
 		
 	} // End of index
+	
+// ------------------------------------------------------------------------
 	
 	public function submit_ham($comment_id)
 	{
@@ -127,6 +124,8 @@ class Comments extends Controller
 		redirect('admin/comments/index/spam');
 	} // End of submit_ham
 	
+// ------------------------------------------------------------------------
+	
 	public function submit_spam($comment_id)
 	{
 		if (!is_valid_number($comment_id))
@@ -140,6 +139,8 @@ class Comments extends Controller
 		$this->session->set_flashdata('notice','Spam submitted!');
 		redirect('admin/comments/index/ham');
 	} // End of submit_spam
+	
+// ------------------------------------------------------------------------
 	
 	public function delete($comment_id)
 	{
@@ -155,6 +156,8 @@ class Comments extends Controller
 		redirect('admin/comments');
 	} // End of delete
 	
+// ------------------------------------------------------------------------
+	
 	public function confirm($action = NULL, $comment_id = NULL)
 	{
 		if (empty($action) || empty($comment_id) || !is_valid_number($comment_id) || !is_valid_action($action) || $this->comment_model->get_comment($comment_id) === NULL)
@@ -167,7 +170,7 @@ class Comments extends Controller
 		$data['question'] = 'Are you sure you want to delete the following comment?';
 		$data['comment'] = $this->comment_model->get_comment($comment_id);
 		
-		$this->load->view('admin/admin', $data);
+		$this->load->view('admin/main', $data);
 	} // End of confirm
 	
 } // End of Comments controller

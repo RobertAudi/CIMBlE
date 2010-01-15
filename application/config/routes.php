@@ -48,7 +48,7 @@ $route['scaffolding_trigger'] = "";
 | MY ROUTES
 | -------------------------------------------------------------------------
 */
-$route['admin'] = "admin/dashboard/index";
+$route['admin'] = "admin/dashboard";
 $route['admin/comments/index'] = "admin/comments/index/ham";
 $route['admin/comments/ham'] = "admin/comments/index/ham";
 $route['admin/comments/spam'] = "admin/comments/index/spam";

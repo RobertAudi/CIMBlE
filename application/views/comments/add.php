@@ -5,7 +5,8 @@
 	</ul>
 <?php endif; ?>
 
-<?php echo form_open(site_url('posts/view/'.$post_id)); ?>
+<?php $attr = array('id' => 'comment-form'); ?>
+<?php echo form_open(site_url('posts/view/'.$post_id), $attr); ?>
 	<?php echo form_fieldset('Leave a comment'); ?>
 		
 		<div>
@@ -26,6 +27,15 @@
 		<div>
 		<?php echo form_textarea('body', ''); ?>
 		</div>
+		
+		<?php
+		// if the user tries to reply to another comment we need to store
+		// the id of the parent comment in a hidden field
+		if ($this->uri->segment(5) !== FALSE && is_valid_number($this->uri->segment(5)))
+		{
+			echo form_hidden('reply_to', $this->uri->segment(5));
+		}
+		?>
 		
 		<p><?php echo form_submit('submit', 'Submit'); ?></p>
 	</fieldset>

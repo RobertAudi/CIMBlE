@@ -3,7 +3,7 @@
 		<h2 class="post-title"><a href="<?php echo site_url('posts/view/'.$post->id); ?>"><?php echo $post->title; ?></a></h2>
 		<div class="post-content">
 			<?php
-			echo read_more($post->body);
+			echo read_more(markdown($post->body));
 			echo '<p class="read-more">' . anchor('posts/view/'.$post->id,'read more >>') . '</p>';
 			?>
 		</div> <!--END OF post-content-->

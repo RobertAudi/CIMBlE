@@ -12,9 +12,9 @@
  **/
 class Azakis
 {
-// ===================
-// = Class Variables =
-// ===================
+// ------------------------------------------------------------------------
+// Class Variables
+// ------------------------------------------------------------------------
 	
 	/**
 	 * The current version of akismet.
@@ -65,12 +65,12 @@ class Azakis
 	 **/
 	private $_app_user_agent;
 	
-// --------------------------
-// - End of Class Variables -
-// ==========================
+// ------------------------------------------------------------------------
+// End of Class Variables
+// ------------------------------------------------------------------------
 	
 	/**
-	 * The Constructor.
+	 * The Constructor!
 	 * 
 	 * @access public
 	 **/
@@ -96,7 +96,7 @@ class Azakis
 						);
 		
 		// Insert your Wordpress.com API here
-		$this->_api_key        = '';
+		$this->_api_key        = 'be0560300547';
 		// Insert the url of your blog or site here
 		$this->_home_url       = 'http://www.example.com/';
 		// Replace Application Name by your Application's name and 
@@ -105,9 +105,7 @@ class Azakis
 		$this->_app_user_agent = 'CIMBlE/0.02 | Azakis/0.01';
 	} // End of __construct
 	
-// ==================
-// = Public Methods =
-// ==================
+// ------------------------------------------------------------------------
 	
 	/**
 	 * Checks if a comment is spam.
@@ -134,6 +132,8 @@ class Azakis
 		return ($response == 'true');
 	} // End of is_spam
 	
+// ------------------------------------------------------------------------
+	
 	/**
 	 * Submit a missed spam to Akismet
 	 *
@@ -158,6 +158,8 @@ class Azakis
 		
 		return TRUE;
 	} // End of submit_spam
+	
+// ------------------------------------------------------------------------
 	
 	/**
 	 * Submit to Akismet a non-spam comment that was considered a spam
@@ -184,13 +186,9 @@ class Azakis
 		return TRUE;
 	} // End of submit_ham
 	
-// -------------------------
-// - End of Public Methods -
-// =========================
-	
-// ===================
-// = Private Methods =
-// ===================
+// ------------------------------------------------------------------------
+// Private Methods
+// ------------------------------------------------------------------------
 	
 	/**
 	 * Get a response from the Akismet server
@@ -228,6 +226,8 @@ class Azakis
 		return $response[1];
 	} // End of _get_response
 	
+// ------------------------------------------------------------------------
+	
 	/**
 	 * Check if the provided api key is valid
 	 *
@@ -240,6 +240,8 @@ class Azakis
 			
 		return ($key_check == "valid");
 	} // End of _is_valid_api_key
+	
+// ------------------------------------------------------------------------
 	
 	/**
 	 * Add the necessary keys/values to the provided comment array and
@@ -295,10 +297,6 @@ class Azakis
 		
 		return $request;
 	} // End of _setup_request
-	
-// --------------------------
-// - End of Private Methods -
-// ==========================
 	
 } // End of Azakis class
 

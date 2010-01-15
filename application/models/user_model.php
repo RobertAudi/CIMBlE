@@ -1,12 +1,16 @@
-<?php
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class User_model extends Model
 {
-	// constructor
+	/**
+	 * The Constructor!
+	 */
 	public function __construct()
 	{
 		parent::Model();
 	}
+	
+// ------------------------------------------------------------------------
 	
 	/**
 	 * Get a list of all the registered users
@@ -26,7 +30,9 @@ class User_model extends Model
 		// ...else return NULL
 		return NULL;
 	} // End of get_users
-
+	
+// ------------------------------------------------------------------------
+	
 	/**
 	 * Get one user from the database
 	 *
@@ -48,6 +54,8 @@ class User_model extends Model
 		return NULL;
 		
 	} // End of get_user
+	
+// ------------------------------------------------------------------------
 	
 	/**
 	 * Count the number of users registered
@@ -72,9 +80,9 @@ class User_model extends Model
 		}
 	} // End of count_users
 	
-// =================
-// = Admin Methods =
-// =================
+// ------------------------------------------------------------------------
+// Admin Methods
+// ------------------------------------------------------------------------
 	
 	/**
 	 * Add a new user to the database
@@ -98,6 +106,8 @@ class User_model extends Model
 			return FALSE;
 		}
 	} // End of add_user
+	
+// ------------------------------------------------------------------------
 	
 	/**
 	 * Delete a registered user from the database
@@ -125,8 +135,7 @@ class User_model extends Model
 		}
 	} // End of delete_user
 	
-// ------------------------
-// - End of Admin Methods -
-// ========================
-	
 } // End of User_model
+
+/* End of file user_model.php */
+/* Location: ./application/models/user_model.php */
