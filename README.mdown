@@ -20,6 +20,12 @@ soon as possible.
 		email    :  admin
 		password :  admin
 
+## Announcement
+In the near future I will rename the application Azog. I will not replace CIMBlE directly,
+what I am going to do is create a new git repository with the new name. So for the very fiew
+followers of the project, once you see the new Azog project that means the CIMBlE project won't
+be updated anymore.
+
 ## Changelog
 ### 15/01/10
 * Integrated the new breadcrumbs library, Azbraz. Also breadcrumbs generate themselves according to the URI.
